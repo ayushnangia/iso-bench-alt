@@ -4,6 +4,9 @@
   --primary-hover: #1d4ed8;
   --secondary-color: #64748b;
   --accent-color: #0ea5e9;
+  --accent-green: #059669;
+  --accent-red: #dc2626;
+  --accent-amber: #d97706;
   --text-primary: #1e293b;
   --text-secondary: #64748b;
   --text-light: #94a3b8;
@@ -688,23 +691,365 @@ code {
   }
 }
 
-/* Animation for page load */
+/* ===== Scroll-Reveal Animations (progressive enhancement) ===== */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* When JS is enabled, hide scroll-reveal elements until observed */
+.js-enabled .scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.js-enabled .scroll-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* When JS is NOT enabled, everything is visible by default */
+
+
+/* ===== Plotly Chart Containers ===== */
+.plotly-chart {
+  min-height: 300px;
+  width: 100%;
+}
+
+
+/* ===== Scrollytelling ===== */
+.scrollytelling {
+  position: relative;
+  background: var(--background-primary);
+  border-top: 1px solid var(--border-color);
+}
+
+.scrollytelling-intro {
+  padding: 4rem 1.5rem 1.5rem;
+  background: var(--background-primary);
+}
+
+.scrollytelling-inner {
+  display: flex;
+  gap: 3rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Left column: narrative steps */
+.story-steps {
+  flex: 0 0 36%;
+  position: relative;
+}
+
+/* (story-step styles moved to bottom with entrance animation) */
+
+/* Step label — academic "Finding N" style */
+.story-step .step-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 0.6rem;
+  transition: color 0.4s ease;
+}
+
+.story-step.is-active .step-label {
+  color: var(--text-primary);
+}
+
+/* Step heading — scholarly, measured */
+.story-step h3 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+/* Step body — formal prose */
+.story-step p {
+  font-size: 0.98rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* Stat callout — academic highlight box */
+.step-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1rem 1.25rem;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  margin-top: 0.25rem;
+}
+
+.step-stat .stat-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.step-stat .stat-number .stat-unit {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-left: 0.1em;
+}
+
+.step-stat .stat-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-light);
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+/* Right column: sticky chart panel */
+.chart-panel {
+  flex: 1;
+  position: sticky;
+  top: 8vh;
+  height: 84vh;
+  align-self: flex-start;
+}
+
+/* (chart-panel-inner styles moved to bottom with shadow pulse) */
+
+/* Figure label at top of chart panel */
+.chart-panel-figure-label {
+  flex: 0 0 auto;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--background-secondary);
+  transition: opacity 0.4s ease;
+}
+
+/* Chart area */
+.chart-panel-charts {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+
+.panel-chart {
+  position: absolute;
+  inset: 0;
+  padding: 0.75rem 1rem;
+  opacity: 0;
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panel-chart.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Plotly charts inside panel need full size */
+.panel-chart > div,
+.panel-chart .js-plotly-plot {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ===== Scrollytelling: Mobile Collapse ===== */
+@media (max-width: 1024px) {
+  .scrollytelling-inner {
+    flex-direction: column;
+    padding: 0 1rem;
   }
-  to {
+
+  .story-steps {
+    flex: none;
+    width: 100%;
+  }
+
+  .story-step {
+    min-height: auto;
+    padding: 2.5rem 1rem;
     opacity: 1;
-    transform: translateY(0);
+    border-left: 3px solid var(--border-color);
+  }
+
+  .story-step.is-active {
+    border-left-color: var(--text-primary);
+  }
+
+  .chart-panel {
+    display: none;
+  }
+
+  /* Show inline charts on mobile */
+  .story-step .mobile-chart {
+    display: block;
+    min-height: 300px;
+    margin-top: 1.25rem;
+    background: var(--background-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
   }
 }
 
-.hero, .section {
-  animation: fadeInUp 0.6s ease-out;
+@media (min-width: 1025px) {
+  .story-step .mobile-chart {
+    display: none;
+  }
 }
 
-/* Improved focus states for accessibility */
+
+/* ===== Commit Explorer ===== */
+.explorer-controls {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.explorer-filter .label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: var(--text-secondary);
+}
+
+.explorer-cards-container {
+  margin-bottom: 1rem;
+}
+
+.explorer-card {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.explorer-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--background-accent);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.explorer-card-header code {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary) !important;
+  background: transparent !important;
+}
+
+.explorer-codebase-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  background: var(--primary-color);
+  color: white;
+}
+
+.explorer-agents {
+  padding: 0.5rem 0;
+}
+
+.explorer-agent-row {
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.explorer-agent-row:last-child {
+  border-bottom: none;
+}
+
+.explorer-agent-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.4rem;
+  color: var(--text-primary);
+}
+
+.explorer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.explorer-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 6px;
+  background: var(--background-accent);
+  color: var(--text-secondary);
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.explorer-metric {
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'SF Mono', 'Monaco', monospace;
+  color: var(--text-secondary);
+}
+
+.explorer-summary {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
+
+.explorer-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.explorer-counter {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 80px;
+  text-align: center;
+}
+
+.explorer-empty {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+
+/* ===== Focus states ===== */
 .button:focus,
 .related-works-btn:focus,
 a:focus {
@@ -713,22 +1058,322 @@ a:focus {
 }
 
 
-/* Print styles */
+/* ===== Print ===== */
 @media print {
-  .more-works-container {
+  .more-works-container,
+  .explorer-controls,
+  .explorer-nav {
     display: none;
   }
-  
-  .hero, .section {
-    animation: none;
+
+  .js-enabled .scroll-reveal {
+    opacity: 1;
+    transform: none;
   }
-  
+
   .button {
     background: transparent !important;
     color: var(--text-primary) !important;
     box-shadow: none !important;
   }
+
+  .chart-panel { display: none; }
+  .story-step { opacity: 1; min-height: auto; border-left-color: var(--text-primary); }
+  .story-step .mobile-chart { display: block; }
+  .scrollytelling { border-top: none; }
 }
 
+/* ===== Mobile: Commit Explorer ===== */
+@media screen and (max-width: 768px) {
+  .explorer-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .explorer-badges {
+    gap: 0.3rem;
+  }
+
+  .explorer-badge {
+    font-size: 0.65rem;
+  }
+
+  .plotly-chart {
+    min-height: 250px;
+  }
+}
+
+
+/* ===== Scroll Progress Bar ===== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+
+/* ===== Hero Enhancements ===== */
+.venue-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 1px solid #bfdbfe;
+  padding: 0.4rem 1.2rem;
+  border-radius: 100px;
+  margin-bottom: 1.5rem;
+}
+
+.publication-subtitle {
+  color: var(--text-secondary) !important;
+  font-weight: 400 !important;
+  max-width: 640px;
+  margin: 0 auto 2rem !important;
+}
+
+
+/* ===== Step Entrance Animation ===== */
+.story-step {
+  min-height: 85vh;
+  padding: 3rem 1.5rem 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.12;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 3px solid transparent;
+  position: relative;
+  transform: translateY(8px);
+}
+
+.story-step.is-active {
+  opacity: 1;
+  border-left-color: var(--text-primary);
+  transform: translateY(0);
+}
+
+
+
+/* ===== Chart Panel Shadow Pulse ===== */
+.chart-panel-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--background-primary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: box-shadow 0.5s ease;
+}
+
+.chart-panel-inner.transitioning {
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgb(37 99 235 / 0.08);
+}
+
+
+/* ===== Key Takeaway ===== */
+.takeaway-card {
+  border-left: 4px solid var(--primary-color);
+  padding: 1.5rem 2rem;
+  background: var(--background-primary);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.takeaway-heading {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.takeaway-text {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+
+/* ===== Failure Mode Cards ===== */
+.failure-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.failure-card {
+  background: var(--background-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.failure-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.failure-card[data-failure="planning"] { border-left: 4px solid var(--accent-amber); }
+.failure-card[data-failure="grounding"] { border-left: 4px solid var(--accent-red); }
+.failure-card[data-failure="workflow"] { border-left: 4px solid var(--primary-color); }
+
+.failure-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.failure-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--background-accent);
+  color: var(--text-secondary);
+}
+
+.failure-card[data-failure="planning"] .failure-icon { background: #fef3c7; color: var(--accent-amber); }
+.failure-card[data-failure="grounding"] .failure-icon { background: #fee2e2; color: var(--accent-red); }
+.failure-card[data-failure="workflow"] .failure-icon { background: #dbeafe; color: var(--primary-color); }
+
+.failure-model {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.failure-type {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.failure-stat-badge {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  background: var(--background-accent);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.failure-card-body {
+  padding: 1.5rem;
+}
+
+.failure-card-body > p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.failure-insight {
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--text-light);
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 1rem;
+  margin-bottom: 0;
+}
+
+.failure-metrics {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.failure-metric {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0.75rem;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  min-width: 72px;
+}
+
+.failure-metric .fm-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.failure-metric .fm-key {
+  font-size: 0.68rem;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.failure-code {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+  border: 1px solid #1e293b !important;
+  border-radius: 10px !important;
+  padding: 1.25rem !important;
+  font-size: 0.82rem !important;
+  font-family: 'JetBrains Mono', 'SF Mono', monospace !important;
+  line-height: 1.6 !important;
+  overflow-x: auto;
+  margin-bottom: 0.75rem;
+}
+
+.failure-code .code-dim { color: #475569; }
+.failure-code .code-err { color: #f87171; }
+.failure-code .code-add { color: #4ade80; }
+
+.failure-summary {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--background-secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border-color);
+}
+
+.failure-summary p {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+}
+
+
+/* ===== Failure cards: mobile ===== */
+@media (max-width: 1024px) {
+  .failure-card-header { flex-wrap: wrap; }
+  .failure-stat-badge { margin-left: 0; }
+}
 
 

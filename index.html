@@ -34,14 +34,17 @@
   <link rel="stylesheet" href="static/css/index.css">
   <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="static/js/fontawesome.all.min.js"></script>
   <script defer src="static/js/index.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 <body>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" id="scrollProgress"></div>
 
   <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
     <i class="fas fa-chevron-up"></i>
@@ -51,19 +54,16 @@
     <div class="hero-body">
       <div class="container is-max-desktop">
         <div class="columns is-centered">
-          <div class="column has-text-centered">
+          <div class="column has-text-centered scroll-reveal">
+            <div class="venue-badge">ICML 2026 &middot; Pre-print</div>
             <h1 class="title is-1 publication-title">ISO-Bench</h1>
-            <p class="subtitle is-3">Can Coding Agents Optimize Real-World Inference Workloads?</p>
+            <p class="subtitle is-3 publication-subtitle">Can Coding Agents Optimize Real-World Inference Workloads?</p>
 
             <div class="is-size-5 publication-authors">
               <span class="author-block"><a href="#">Ayush Nangia</a>,</span>
               <span class="author-block"><a href="#">Shikhar Mishra</a>,</span>
               <span class="author-block"><a href="#">Aman Gokrani</a>,</span>
               <span class="author-block"><a href="#">Paras Chopra</a></span>
-            </div>
-
-            <div class="is-size-6 publication-authors" style="margin-bottom: 1rem;">
-              <span class="author-block"><strong>Pre-print 2026</strong></span>
             </div>
 
             <div class="column has-text-centered">
@@ -98,7 +98,7 @@
   <!-- Main figure -->
   <section class="hero teaser">
     <div class="container is-max-desktop">
-      <div class="hero-body">
+      <div class="hero-body scroll-reveal">
         <img src="static/images/main_fig.png" alt="ISO-Bench evaluation pipeline" style="width:100%; border-radius:16px; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);">
         <h2 class="subtitle has-text-centered">
           <strong>Figure 1:</strong> ISO-Bench evaluation pipeline. Given a codebase and task description, a coding agent produces an optimization patch. We compare this patch against the human commit using hard metrics (TTFT, throughput) and soft metrics (bottleneck targeting, implementation approach). Hard metrics measure performance improvement; soft metrics assess whether the agent targeted the correct code.
@@ -112,7 +112,7 @@
   <section class="section hero is-light">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
-        <div class="column is-full">
+        <div class="column is-full scroll-reveal">
           <h2 class="title is-3">Key Contributions</h2>
           <div class="content">
             <ul>
@@ -133,7 +133,7 @@
   <section class="section">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
-        <div class="column is-full">
+        <div class="column is-full scroll-reveal">
           <h2 class="title is-3">Introduction</h2>
           <div class="content has-text-justified">
             <p>
@@ -159,7 +159,7 @@
   <section class="section hero is-light">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
-        <div class="column is-full">
+        <div class="column is-full scroll-reveal">
           <h2 class="title is-3">The Dual-Metric Framework</h2>
           <div class="content has-text-justified">
             <p>
@@ -203,170 +203,196 @@
   </section>
 
 
-  <!-- Experiments -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full">
-          <h2 class="title is-3">Experiments</h2>
-          <div class="content has-text-justified">
-            <p>
-              We evaluate four agent configurations: <strong>Claude Code</strong> (Claude Sonnet 4.5), <strong>Codex CLI</strong> (GPT-5), <strong>TRAE (Sonnet)</strong> (Claude Sonnet 4.5), and <strong>TRAE (GPT-5)</strong> (GPT-5). Each agent is given the full codebase, the bottleneck description, and 120 minutes to produce an optimization patch.
-            </p>
-          </div>
+  <!-- Scrollytelling: Experiments through Generalization -->
+  <section class="scrollytelling" id="results">
+    <div class="scrollytelling-intro">
+      <div class="container is-max-desktop">
+        <h2 class="title is-3 scroll-reveal">Experimental Results</h2>
+        <div class="content has-text-justified scroll-reveal">
+          <p>We evaluate four agent configurations: <strong>Claude Code</strong> (Claude Sonnet 4.5), <strong>Codex CLI</strong> (GPT-5), <strong>TRAE (Sonnet)</strong> (Claude Sonnet 4.5), and <strong>TRAE (GPT-5)</strong> (GPT-5). Each agent is given the full codebase, the bottleneck description, and 120 minutes to produce an optimization patch.</p>
+        </div>
+      </div>
+    </div>
 
-          <!-- True Success Chart -->
-          <h3 class="title is-4">Can Agents Optimize GPU Inference Code?</h3>
-          <div class="content has-text-justified">
-            <p><strong>True Success</strong> requires both passing hard metrics <em>and</em> demonstrating correct bottleneck targeting via soft metrics. No single agent dominates: Claude Code leads on vLLM (46.2%) but drops to 26.7% on SGLang. Rankings flip completely between codebases.</p>
-          </div>
-          <div style="max-width: 700px; margin: 0 auto 2rem;">
-            <canvas id="trueSuccessChart"></canvas>
-          </div>
+    <div class="scrollytelling-inner">
+      <!-- Left: narrative steps -->
+      <div class="story-steps">
 
-          <!-- Hard vs True Success -->
-          <h3 class="title is-4">Do Hard Metrics Tell the Full Story?</h3>
-          <div class="content has-text-justified">
-            <p>The gap between Hard Success and True Success reveals how often agents succeed accidentally (Lucky Wins). Hard metrics alone can overestimate agent capabilities.</p>
+        <!-- Step 1 -->
+        <div class="story-step is-active" data-chart="trueSuccessChart" data-figure="Figure 3">
+          <div class="step-label">Finding 1</div>
+          <h3>No single agent dominates across codebases</h3>
+          <p><strong>True Success</strong> requires both passing hard metrics <em>and</em> demonstrating correct bottleneck targeting via soft metrics. Claude Code leads on vLLM (46.2%) but drops to 26.7% on SGLang, while TRAE (GPT-5) achieves 86.7% on SGLang but only 17.9% on vLLM. Rankings flip completely between the two codebases.</p>
+          <div class="step-stat">
+            <span class="stat-number">46.2%</span>
+            <span class="stat-label">Best True Success on vLLM (Claude Code)</span>
           </div>
+        </div>
 
-          <div class="columns" style="margin-bottom: 1rem;">
-            <div class="column">
-              <h4 class="title is-5 has-text-centered">vLLM (39 tasks)</h4>
-              <div style="max-width: 500px; margin: 0 auto;">
-                <canvas id="hardVsTrueVllmChart"></canvas>
-              </div>
-            </div>
-            <div class="column">
-              <h4 class="title is-5 has-text-centered">SGLang (15 tasks)</h4>
-              <div style="max-width: 500px; margin: 0 auto;">
-                <canvas id="hardVsTrueSglangChart"></canvas>
-              </div>
-            </div>
+        <!-- Step 2 -->
+        <div class="story-step" data-chart="hardVsTrueVllmChart" data-figure="Figure 4a">
+          <div class="step-label">Finding 2</div>
+          <h3>Hard metrics overestimate agent capabilities on vLLM</h3>
+          <p>The gap between Hard Success and True Success reveals how often agents succeed accidentally via Lucky Wins (Q3). On vLLM, this overestimation ranges from 2.6 percentage points (TRAE GPT-5) to 12.8 pp (Codex CLI). Hard-metric-only evaluation systematically inflates reported performance.</p>
+          <div class="step-stat">
+            <span class="stat-number">12.8<span class="stat-unit">pp</span></span>
+            <span class="stat-label">Largest overestimation gap (Codex CLI, vLLM)</span>
           </div>
+        </div>
 
-          <div class="content has-text-justified">
-            <p>
-              On vLLM, gaps range from 2.6% to 12.8%. On SGLang, Claude Code shows the largest gap (20.0%), while all other agents have zero gap, meaning every hard success was also a true success. Notably, TRAE (Sonnet) and Claude Code use the same underlying model (Claude Sonnet 4.5), yet their scaffolding produces very different outcomes, suggesting that scaffolding matters as much as the model.
-            </p>
+        <!-- Step 3 -->
+        <div class="story-step" data-chart="hardVsTrueSglangChart" data-figure="Figure 4b">
+          <div class="step-label">Finding 3</div>
+          <h3>The overestimation pattern differs on SGLang</h3>
+          <p>On SGLang, Claude Code shows a 20.0 pp gap between Hard and True Success, while all three other agents show zero gap&mdash;every hard success was also a true success. Notably, TRAE (Sonnet) and Claude Code use the identical underlying model (Claude Sonnet 4.5), yet their scaffolding produces dramatically different outcomes.</p>
+          <div class="step-stat">
+            <span class="stat-number">20.0<span class="stat-unit">pp</span></span>
+            <span class="stat-label">Claude Code overestimation on SGLang</span>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="story-step" data-chart="goodIntentVllmChart" data-figure="Figure 5a">
+          <div class="step-label">Finding 4</div>
+          <h3>Understanding does not imply execution on vLLM</h3>
+          <p>Agents frequently identify the correct bottleneck but fail to implement a working solution. On vLLM, three of four agents have Q2 (Good Intent) as their most common outcome. The gap between correct bottleneck identification and true success reveals a fundamental limitation: <strong>diagnosis capability far exceeds remediation capability.</strong></p>
+          <div class="step-stat">
+            <span class="stat-number" data-count-to="69.3" data-count-suffix="%">69.3%</span>
+            <span class="stat-label">Understanding-execution gap, TRAE (GPT-5)</span>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="story-step" data-chart="goodIntentSglangChart" data-figure="Figure 5b">
+          <div class="step-label">Finding 5</div>
+          <h3>The understanding-execution gap narrows on SGLang</h3>
+          <p>On SGLang, all agents except Claude Code achieve 100% correct bottleneck identification and demonstrate substantially stronger execution. This suggests the understanding-execution gap is <em>codebase-dependent</em>: SGLang's architecture may be more amenable to agent optimization than vLLM's.</p>
+          <div class="step-stat">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Correct target identification (3 of 4 agents)</span>
+          </div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="story-step" data-chart="quadrantVllmChart" data-figure="Figure 6a">
+          <div class="step-label">Finding 6</div>
+          <h3>Q2 dominates on vLLM: agents understand but cannot execute</h3>
+          <p>The full quadrant distribution on vLLM confirms that Good Intent (Q2) is the modal outcome for three of four agents. True Success (Q1) accounts for fewer than half of all attempts in every case. The primary bottleneck is implementation, not comprehension.</p>
+          <div class="step-stat">
+            <span class="stat-number">Q2</span>
+            <span class="stat-label">Modal quadrant on vLLM (3 of 4 agents)</span>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="story-step" data-chart="quadrantSglangChart" data-figure="Figure 6b">
+          <div class="step-label">Finding 7</div>
+          <h3>The quadrant distribution inverts on SGLang</h3>
+          <p>On SGLang, Q1 (True Success) becomes the dominant outcome for all agents except Claude Code, which retains a high Q2 count. This inversion&mdash;from execution-limited to execution-capable&mdash;occurs despite using the same models and scaffolding on both codebases.</p>
+          <div class="step-stat">
+            <span class="stat-number">Q1</span>
+            <span class="stat-label">Modal quadrant on SGLang (3 of 4 agents)</span>
+          </div>
+        </div>
+
+        <!-- Step 8 -->
+        <div class="story-step" data-chart="approachVllmChart" data-figure="Figure 7a">
+          <div class="step-label">Finding 8</div>
+          <h3>Agents adopt distinct optimization strategies</h3>
+          <p>On vLLM, Claude Code and Codex CLI favor <em>alternative</em> approaches (different from the reference solution), while TRAE (GPT-5) predominantly selects <em>similar</em> approaches. Each agent maintains a consistent strategy regardless of the task, suggesting approach selection is determined by scaffolding rather than task characteristics.</p>
+          <div class="step-stat">
+            <span class="stat-number">14</span>
+            <span class="stat-label">Alternative approaches by Claude Code (vLLM)</span>
+          </div>
+        </div>
+
+        <!-- Step 9 -->
+        <div class="story-step" data-chart="approachSglangChart" data-figure="Figure 7b">
+          <div class="step-label">Finding 9</div>
+          <h3>Performance does not generalize across codebases</h3>
+          <p>TRAE (Sonnet) and Claude Code both use <strong>Claude Sonnet 4.5</strong> as the underlying model, yet their True Success rates differ by 53.3 pp on SGLang and 18.0 pp on vLLM&mdash;in opposite directions. The approach distribution shifts dramatically, but each agent's <em>strategy preference</em> remains fixed. Single-codebase evaluations can systematically misrepresent agent capability.</p>
+          <div class="step-stat">
+            <span class="stat-number">53.3<span class="stat-unit">pp</span></span>
+            <span class="stat-label">Same model, different scaffolding (SGLang)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: sticky chart panel -->
+      <div class="chart-panel">
+        <div class="chart-panel-inner">
+          <div class="chart-panel-figure-label" id="chartFigureLabel">Figure 3</div>
+          <div class="chart-panel-charts">
+            <div id="trueSuccessChart" class="panel-chart is-active"></div>
+            <div id="hardVsTrueVllmChart" class="panel-chart"></div>
+            <div id="hardVsTrueSglangChart" class="panel-chart"></div>
+            <div id="goodIntentVllmChart" class="panel-chart"></div>
+            <div id="goodIntentSglangChart" class="panel-chart"></div>
+            <div id="quadrantVllmChart" class="panel-chart"></div>
+            <div id="quadrantSglangChart" class="panel-chart"></div>
+            <div id="approachVllmChart" class="panel-chart"></div>
+            <div id="approachSglangChart" class="panel-chart"></div>
           </div>
         </div>
       </div>
     </div>
+
+    <noscript><p class="has-text-centered has-text-grey">Interactive charts require JavaScript.</p></noscript>
   </section>
 
 
-  <!-- Understanding != Execution -->
+  <!-- Key Takeaway -->
   <section class="section hero is-light">
     <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full">
-          <h2 class="title is-3">Understanding ≠ Execution</h2>
-          <div class="content has-text-justified">
-            <p>
-              Perhaps the most striking finding: agents frequently identify the correct bottleneck (Q1 + Q2) but fail to implement a working solution. On vLLM, three of four agents have their highest quadrant count in Q2 (Good Intent, Bad Execution). The gap between correct understanding and true success reveals a fundamental limitation: <strong>knowing what to do is not the same as doing it correctly.</strong>
-            </p>
-          </div>
-
-          <div class="notification is-warning is-light has-text-centered">
-            <p class="is-size-1 has-text-weight-bold has-text-danger">69.3%</p>
-            <p>TRAE (GPT-5) correctly identifies 87.2% of vLLM bottlenecks but achieves only 17.9% true success, the largest gap of any agent.</p>
-          </div>
-
-          <!-- Good Intent figures from paper -->
-          <div class="columns" style="margin-bottom: 1.5rem;">
-            <div class="column">
-              <div class="has-text-centered">
-                <img src="static/images/good_intent_vllm.png" alt="Good Intent vs Bad Execution on vLLM" style="width:100%; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-              </div>
-              <p class="has-text-centered" style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Figure 3:</strong> Good Intent vs Bad Execution on vLLM (39 tasks). Light bars show correct target identification (Q1+Q2). Dark bars show True Success (Q1). The gap represents Q2 failures.</p>
-            </div>
-            <div class="column">
-              <div class="has-text-centered">
-                <img src="static/images/good_intent_sglang.png" alt="Good Intent vs Bad Execution on SGLang" style="width:100%; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-              </div>
-              <p class="has-text-centered" style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Figure 4:</strong> Good Intent vs Bad Execution on SGLang (15 tasks). Light bars show correct target identification (Q1+Q2). Dark bars show True Success (Q1). The gap represents Q2 failures.</p>
-            </div>
-          </div>
-
-          <div class="content has-text-justified">
-            <p>
-              Even the best-performing agent (Claude Code) has a 38.4% gap. On SGLang, the gap narrows considerably: all agents except Claude Code identify the correct target in all 15 tasks, and they also demonstrate much stronger execution. This suggests the bottleneck in current coding agents is not comprehension but <em>implementation</em>, and this gap varies significantly across codebases.
-            </p>
-          </div>
-        </div>
+      <div class="takeaway-card scroll-reveal">
+        <h3 class="takeaway-heading">Key Takeaway</h3>
+        <p class="takeaway-text">Hard metrics alone overestimate agent capabilities by up to 12.8 percentage points. Agents understand bottlenecks far better than they can fix them&mdash;and performance rankings flip entirely between codebases. Single-codebase, single-metric evaluations are insufficient.</p>
       </div>
     </div>
   </section>
 
 
-  <!-- Quadrant Distribution -->
-  <section class="section">
+  <!-- Commit Explorer -->
+  <section class="section hero is-light" id="commit-explorer">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
-        <div class="column is-full">
-          <h2 class="title is-3">Quadrant Distribution</h2>
+        <div class="column is-full scroll-reveal">
+          <h2 class="title is-3">Commit Explorer</h2>
           <div class="content has-text-justified">
-            <p>The full distribution of outcomes across all four quadrants reveals where each agent spends most of its attempts.</p>
+            <p>Browse per-commit results across all four agents. Each card shows the quadrant classification, hard metric result, improvement percentage, bottleneck targeting, and approach category for every agent on a given commit.</p>
           </div>
 
-          <div class="columns" style="margin-bottom: 1rem;">
-            <div class="column">
-              <h4 class="title is-5 has-text-centered">vLLM (39 tasks)</h4>
-              <div style="max-width: 500px; margin: 0 auto;">
-                <canvas id="quadrantVllmChart"></canvas>
+          <div class="explorer-controls">
+            <div class="explorer-filter">
+              <label class="label" for="explorer-codebase">Codebase</label>
+              <div class="select">
+                <select id="explorer-codebase">
+                  <option value="vllm">vLLM (99 commits)</option>
+                  <option value="sglang">SGLang (15 commits)</option>
+                </select>
               </div>
             </div>
-            <div class="column">
-              <h4 class="title is-5 has-text-centered">SGLang (15 tasks)</h4>
-              <div style="max-width: 500px; margin: 0 auto;">
-                <canvas id="quadrantSglangChart"></canvas>
+            <div class="explorer-filter">
+              <label class="label" for="explorer-quadrant">Quadrant Filter</label>
+              <div class="select">
+                <select id="explorer-quadrant">
+                  <option value="all">All Quadrants</option>
+                  <option value="Q1">Q1 — True Success</option>
+                  <option value="Q2">Q2 — Good Intent</option>
+                  <option value="Q3">Q3 — Lucky Win</option>
+                  <option value="Q4">Q4 — Failure</option>
+                </select>
               </div>
             </div>
           </div>
 
-          <div class="content has-text-justified">
-            <p>
-              On vLLM, Q2 (Good Intent) dominates for most agents, confirming that the primary failure mode is execution rather than understanding. On SGLang, the pattern reverses: most outcomes are Q1 (True Success), except for Claude Code which still struggles with execution despite using the same model as TRAE (Sonnet).
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+          <div id="explorer-cards" class="explorer-cards-container"></div>
 
-
-  <!-- Does Performance Generalize? -->
-  <section class="section hero is-light">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-full">
-          <h2 class="title is-3">Does Performance Generalize Across Codebases?</h2>
-          <div class="content has-text-justified">
-            <p>
-              Agent rankings shift between vLLM and SGLang, with the top performer on one codebase becoming a bottom performer on the other. Each agent maintains its preferred strategy regardless of the project. Claude Code consistently favors alternative approaches, which succeed on vLLM but fail on SGLang. TRAE agents consistently match the reference approach, succeeding on SGLang but not vLLM.
-            </p>
-          </div>
-
-          <div class="columns" style="margin-bottom: 1.5rem;">
-            <div class="column">
-              <div class="has-text-centered">
-                <img src="static/images/approach_vllm.png" alt="Approach distribution on vLLM" style="width:100%; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-              </div>
-              <p class="has-text-centered" style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Figure 5:</strong> Approach distribution on vLLM (39 tasks).</p>
-            </div>
-            <div class="column">
-              <div class="has-text-centered">
-                <img src="static/images/approach_sglang.png" alt="Approach distribution on SGLang" style="width:100%; border-radius: 8px; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);">
-              </div>
-              <p class="has-text-centered" style="margin-top: 0.5rem; font-size: 0.9rem;"><strong>Figure 6:</strong> Approach distribution on SGLang (15 tasks).</p>
-            </div>
-          </div>
-
-          <div class="content has-text-justified">
-            <p>
-              Notably, TRAE (Sonnet) and Claude Code both use <strong>Claude Sonnet 4.5</strong> as the underlying model, yet their performance differs substantially. On vLLM, Claude Code achieves 46.2% True Success while TRAE (Sonnet) reaches 28.2%. On SGLang, TRAE (Sonnet) achieves 80.0% while Claude Code reaches only 26.7%. The model is identical, but their scaffolding choices (how they explore, decompose tasks, and iterate) produce different approach distributions and outcomes. This suggests that model capability alone does not determine agent performance, and single-codebase evaluations can overstate generalization.
-            </p>
+          <div class="explorer-nav">
+            <button id="explorer-prev" class="button is-small is-dark" disabled><i class="fas fa-chevron-left"></i>&nbsp;Prev</button>
+            <span id="explorer-counter" class="explorer-counter">1 / 99</span>
+            <button id="explorer-next" class="button is-small is-dark">Next&nbsp;<i class="fas fa-chevron-right"></i></button>
           </div>
         </div>
       </div>
@@ -375,102 +401,113 @@
 
 
   <!-- Open-Source Models -->
-  <section class="section">
+  <section class="section" id="open-source">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column is-full">
-          <h2 class="title is-3">Open-Source Models</h2>
-          <div class="content has-text-justified">
-            <p>
-              We evaluated three open-source models using the same TRAE-Agent scaffolding. None produced a single working optimization, and their failures cluster into distinct patterns:
-            </p>
+          <h2 class="title is-3 scroll-reveal">Open-Source Models: 0% Success Rate</h2>
+          <div class="content has-text-justified scroll-reveal" style="margin-bottom: 2rem;">
+            <p>We evaluated three open-source models using the same TRAE-Agent scaffolding. None produced a single working optimization. Each failure reveals a qualitatively different capability gap.</p>
+          </div>
 
-            <h4>MiniMax-M2.1 — <em>Planning Without Execution</em></h4>
-            <p>
-              Verbalized detailed optimization plans for 75 steps but never executed a single tool call. Generated 81,782 output tokens over 477 seconds with zero tool invocations.
-            </p>
-            <table class="table is-fullwidth" style="font-size: 0.9rem;">
-              <tbody>
-                <tr><td><strong>Tool calls</strong></td><td>0</td></tr>
-                <tr><td><strong>Steps</strong></td><td>75</td></tr>
-                <tr><td><strong>Duration</strong></td><td>477s</td></tr>
-                <tr><td><strong>Output tokens</strong></td><td>81,782 (171 tok/s)</td></tr>
-                <tr><td><strong>Input tokens</strong></td><td>1,599,945</td></tr>
-              </tbody>
-            </table>
-            <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-size: 0.85rem; overflow-x: auto;"><code>Step 73: Completed
-LLM Response: The user keeps saying I haven't completed
-    the task. I need to explore the repository and
-    make changes. Let me start by using the
-    str_replace_based_edit_tool tool.
+          <div class="failure-cards">
 
-    I need to actually use the tools now.
-    I need to actually use the tools now.
-    I need to actually use the tools now.
-    I need to actually use the tools now.
-    I need to actually use the tools now.
-    <span style="color: #f5576c;">[...repeated 2,412 times total...]</span>
+            <!-- Card 1: MiniMax -->
+            <div class="failure-card scroll-reveal" data-failure="planning">
+              <div class="failure-card-header">
+                <div class="failure-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                  <h4 class="failure-model">MiniMax-M2.1</h4>
+                  <span class="failure-type">Planning Without Execution</span>
+                </div>
+                <div class="failure-stat-badge">0 tool calls</div>
+              </div>
+              <div class="failure-card-body">
+                <p>Verbalized detailed optimization plans for 75 steps but never executed a single tool call. Generated 81,782 output tokens over 477 seconds with zero invocations.</p>
+                <div class="failure-metrics">
+                  <div class="failure-metric"><span class="fm-val">75</span><span class="fm-key">steps</span></div>
+                  <div class="failure-metric"><span class="fm-val">477s</span><span class="fm-key">duration</span></div>
+                  <div class="failure-metric"><span class="fm-val">81,782</span><span class="fm-key">output tokens</span></div>
+                  <div class="failure-metric"><span class="fm-val">0</span><span class="fm-key">tool calls</span></div>
+                </div>
+                <pre class="failure-code"><code><span class="code-dim">Step 73:</span>
+I need to explore the repository and make changes.
+Let me start by using the str_replace_based_edit_tool.
 
-Step 74: Completed
-LLM Response: I need to actually use the tools now...</code></pre>
-            <p>
-              The model can verbalize the correct strategy ("use str_replace_based_edit_tool") but cannot translate this into an actual tool call. The phrase appears 2,412 times without a single invocation.
-            </p>
+<span class="code-err">I need to actually use the tools now.</span>
+<span class="code-err">I need to actually use the tools now.</span>
+<span class="code-err">I need to actually use the tools now.</span>
+<span class="code-dim">[...repeated 2,412 times total...]</span></code></pre>
+                <p class="failure-insight">The model can <em>verbalize</em> the correct strategy but cannot translate intent into action. The phrase appears 2,412 times without a single invocation.</p>
+              </div>
+            </div>
 
-            <h4>GPT-OSS-120B — <em>Environment Confusion</em></h4>
-            <p>
-              Fundamentally misunderstood the task environment. Instead of optimizing vLLM code, attempted to create mock implementations of PyTorch, Triton, and Transformers libraries inside the project directory (~84 file creation attempts).
-            </p>
-            <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-size: 0.85rem; overflow-x: auto;"><code><span style="color: #6a9955;">Files the model attempted to create:</span>
-<span style="color: #4ec9b0;">+ vllm_core-0006/torch/__init__.py</span>
-<span style="color: #4ec9b0;">+ vllm_core-0006/torch/nn/__init__.py</span>
-<span style="color: #4ec9b0;">+ vllm_core-0006/torch/cuda/__init__.py</span>
-<span style="color: #4ec9b0;">+ vllm_core-0006/triton/__init__.py</span>
-<span style="color: #4ec9b0;">+ vllm_core-0006/transformers/__init__.py</span>
+            <!-- Card 2: GPT-OSS -->
+            <div class="failure-card scroll-reveal" data-failure="grounding">
+              <div class="failure-card-header">
+                <div class="failure-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <h4 class="failure-model">GPT-OSS-120B</h4>
+                  <span class="failure-type">Environment Confusion</span>
+                </div>
+                <div class="failure-stat-badge">84 fake files</div>
+              </div>
+              <div class="failure-card-body">
+                <p>Instead of optimizing vLLM code, attempted to create mock implementations of PyTorch, Triton, and Transformers inside the project directory.</p>
+                <pre class="failure-code"><code><span class="code-add">+ vllm_core-0006/torch/__init__.py</span>
+<span class="code-add">+ vllm_core-0006/torch/nn/__init__.py</span>
+<span class="code-add">+ vllm_core-0006/torch/cuda/__init__.py</span>
+<span class="code-add">+ vllm_core-0006/triton/__init__.py</span>
+<span class="code-add">+ vllm_core-0006/transformers/__init__.py</span>
 
-<span style="color: #6a9955;">Contents of attempted torch/__init__.py:</span>
+<span class="code-dim">Contents of torch/__init__.py:</span>
 class dtype:
     pass
-
 float16 = 'float16'
-float32 = 'float32'
 __version__ = '0.0.0'</code></pre>
-            <p>
-              The model cannot distinguish between "code I should optimize" and "libraries I should use." It attempted to recreate PyTorch from scratch rather than importing it as a dependency.
-            </p>
+                <p class="failure-insight">Cannot distinguish between "code I should optimize" and "libraries I should use." Attempted to recreate PyTorch from scratch.</p>
+              </div>
+            </div>
 
-            <h4>GLM-4.7 — <em>Task Completion Failure</em></h4>
-            <p>
-              Made valid code edits (59 successful <code>str_replace</code> operations across 386 tool calls) but failed to complete the task workflow.
-            </p>
-            <table class="table is-fullwidth" style="font-size: 0.9rem;">
-              <tbody>
-                <tr><td><strong>Tool calls</strong></td><td>386 (327 bash, 59 str_replace)</td></tr>
-                <tr><td><strong>Final status</strong></td><td>max_steps_exceeded (400 steps)</td></tr>
-              </tbody>
-            </table>
-            <pre style="background: #1e1e1e; color: #d4d4d4; padding: 1rem; border-radius: 8px; font-size: 0.85rem; overflow-x: auto;"><code><span style="color: #6a9955;">Successful edits committed (Step 196):</span>
-git commit output: 2 files changed, 11 insertions(+), 9 deletions(-)
+            <!-- Card 3: GLM -->
+            <div class="failure-card scroll-reveal" data-failure="workflow">
+              <div class="failure-card-header">
+                <div class="failure-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" stroke="currentColor" stroke-width="1.5"/><path d="M8 12h8M12 8v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div>
+                  <h4 class="failure-model">GLM-4.7</h4>
+                  <span class="failure-type">Task Completion Failure</span>
+                </div>
+                <div class="failure-stat-badge">400 steps</div>
+              </div>
+              <div class="failure-card-body">
+                <p>Made 59 successful edits across 386 tool calls but failed to complete the workflow&mdash;the only model to make valid code changes.</p>
+                <div class="failure-metrics">
+                  <div class="failure-metric"><span class="fm-val">386</span><span class="fm-key">tool calls</span></div>
+                  <div class="failure-metric"><span class="fm-val">59</span><span class="fm-key">edits</span></div>
+                  <div class="failure-metric"><span class="fm-val">400</span><span class="fm-key">max steps hit</span></div>
+                </div>
+                <pre class="failure-code"><code><span class="code-dim">Step 196 — successful commit:</span>
+2 files changed, 11 insertions(+), 9 deletions(-)
 
-<span style="color: #6a9955;">Sample optimization in scheduler.py:</span>
-<span style="color: #f5576c;">- self._num_batched_tokens += num_batched_tokens</span>
-<span style="color: #4ec9b0;">+ self._num_batched_tokens = self._num_batched_tokens + num_batched_tokens</span>
+<span class="code-dim">Step 198 — re-applies same patch:</span>
+<span class="code-err">error: patch does not apply</span>
 
-<span style="color: #6a9955;">Then at Step 198, attempted to verify:</span>
-<span style="color: #f5576c;">error: patch failed: tests/core/test_scheduler.py:214</span>
-<span style="color: #f5576c;">error: tests/core/test_scheduler.py: patch does not apply</span>
+<span class="code-dim">Model:</span> "Let me try a different approach..."
+<span class="code-err">[...cycled for 200+ more steps...]</span>
+<span class="code-err">Final: max_steps_exceeded</span></code></pre>
+                <p class="failure-insight">Successfully committed valid edits, then failed to recognize its own success when re-verifying. Unable to call <code>finish</code>.</p>
+              </div>
+            </div>
+          </div>
 
-Model response: "Let me try a different approach..."
-<span style="color: #f5576c;">[...cycled through git operations for 200+ more steps...]</span>
-
-Final status: max_steps_exceeded (400 steps)</code></pre>
-            <p>
-              The model successfully made valid edits and committed them, but when it tried to re-apply the already-applied patch for verification, git returned "patch does not apply." Unable to interpret this as success, it cycled through alternative approaches for 200+ steps without ever calling <code>finish</code>.
-            </p>
-
-            <p>
-              These failure modes illustrate qualitatively different challenges: tool use capability (MiniMax), environment grounding (GPT-OSS), and workflow management (GLM). Real-world inference optimization requires all three.
-            </p>
+          <div class="failure-summary scroll-reveal">
+            <p>Three models, three distinct failure modes: <strong>tool use</strong> (MiniMax), <strong>environment grounding</strong> (GPT-OSS), and <strong>workflow management</strong> (GLM). Real-world inference optimization requires all three.</p>
           </div>
         </div>
       </div>
@@ -479,7 +516,7 @@ Final status: max_steps_exceeded (400 steps)</code></pre>
 
 
   <!-- BibTeX -->
-  <section class="section hero is-light" id="BibTeX">
+  <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <div class="bibtex-header">
         <h2 class="title">BibTeX</h2>
@@ -513,150 +550,11 @@ Final status: max_steps_exceeded (400 steps)</code></pre>
     </div>
   </footer>
 
-  <!-- Chart.js Initialization -->
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const agents = ['Claude Code', 'Codex CLI', 'TRAE (Sonnet)', 'TRAE (GPT-5)'];
-
-    // Color palette
-    const colors = {
-      vllm: '#4e79a7',
-      sglang: '#e15759',
-      hard: '#a0cbe8',
-      true: '#4e79a7',
-      q1: '#59a14f',
-      q2: '#edc948',
-      q3: '#f28e2b',
-      q4: '#e15759'
-    };
-
-    // Shared chart options
-    const defaultOptions = {
-      responsive: true,
-      plugins: {
-        legend: { position: 'top', labels: { font: { family: 'Inter, sans-serif', size: 12 } } },
-        tooltip: { callbacks: { label: function(ctx) { return ctx.dataset.label + ': ' + ctx.raw + (ctx.dataset.isCount ? '' : '%'); } } }
-      },
-      scales: {
-        y: { beginAtZero: true, ticks: { font: { family: 'Inter, sans-serif' } } },
-        x: { ticks: { font: { family: 'Inter, sans-serif', size: 11 } } }
-      }
-    };
-
-    // 1. True Success Rates
-    new Chart(document.getElementById('trueSuccessChart'), {
-      type: 'bar',
-      data: {
-        labels: agents,
-        datasets: [
-          { label: 'vLLM (39 tasks)', data: [46.2, 20.5, 28.2, 17.9], backgroundColor: colors.vllm, borderRadius: 4 },
-          { label: 'SGLang (15 tasks)', data: [26.7, 80.0, 80.0, 86.7], backgroundColor: colors.sglang, borderRadius: 4 }
-        ]
-      },
-      options: {
-        ...defaultOptions,
-        plugins: {
-          ...defaultOptions.plugins,
-          title: { display: true, text: 'True Success Rate (%)', font: { family: 'Inter, sans-serif', size: 14, weight: '600' } }
-        },
-        scales: {
-          ...defaultOptions.scales,
-          y: { ...defaultOptions.scales.y, max: 100, ticks: { ...defaultOptions.scales.y.ticks, callback: v => v + '%' } }
-        }
-      }
-    });
-
-    // 2. Hard vs True Success - vLLM
-    new Chart(document.getElementById('hardVsTrueVllmChart'), {
-      type: 'bar',
-      data: {
-        labels: agents,
-        datasets: [
-          { label: 'Hard Success', data: [56.4, 33.3, 33.3, 20.5], backgroundColor: colors.hard, borderRadius: 4 },
-          { label: 'True Success', data: [46.2, 20.5, 28.2, 17.9], backgroundColor: colors.true, borderRadius: 4 }
-        ]
-      },
-      options: {
-        ...defaultOptions,
-        scales: {
-          ...defaultOptions.scales,
-          y: { ...defaultOptions.scales.y, max: 70, ticks: { ...defaultOptions.scales.y.ticks, callback: v => v + '%' } }
-        }
-      }
-    });
-
-    // 3. Hard vs True Success - SGLang
-    new Chart(document.getElementById('hardVsTrueSglangChart'), {
-      type: 'bar',
-      data: {
-        labels: agents,
-        datasets: [
-          { label: 'Hard Success', data: [46.7, 80.0, 80.0, 86.7], backgroundColor: colors.hard, borderRadius: 4 },
-          { label: 'True Success', data: [26.7, 80.0, 80.0, 86.7], backgroundColor: colors.true, borderRadius: 4 }
-        ]
-      },
-      options: {
-        ...defaultOptions,
-        scales: {
-          ...defaultOptions.scales,
-          y: { ...defaultOptions.scales.y, max: 100, ticks: { ...defaultOptions.scales.y.ticks, callback: v => v + '%' } }
-        }
-      }
-    });
-
-    // 4. Quadrant Distribution - vLLM (stacked)
-    new Chart(document.getElementById('quadrantVllmChart'), {
-      type: 'bar',
-      data: {
-        labels: agents,
-        datasets: [
-          { label: 'Q1 True Success', data: [18, 8, 11, 7], backgroundColor: colors.q1, isCount: true, borderRadius: 2 },
-          { label: 'Q2 Good Intent', data: [15, 20, 20, 27], backgroundColor: colors.q2, isCount: true, borderRadius: 2 },
-          { label: 'Q3 Lucky Win', data: [4, 5, 2, 1], backgroundColor: colors.q3, isCount: true, borderRadius: 2 },
-          { label: 'Q4 Failure', data: [2, 6, 6, 4], backgroundColor: colors.q4, isCount: true, borderRadius: 2 }
-        ]
-      },
-      options: {
-        ...defaultOptions,
-        plugins: {
-          ...defaultOptions.plugins,
-          legend: { ...defaultOptions.plugins.legend, labels: { ...defaultOptions.plugins.legend.labels, boxWidth: 12 } }
-        },
-        scales: {
-          ...defaultOptions.scales,
-          x: { ...defaultOptions.scales.x, stacked: true },
-          y: { ...defaultOptions.scales.y, stacked: true, max: 39, ticks: { ...defaultOptions.scales.y.ticks } }
-        }
-      }
-    });
-
-    // 5. Quadrant Distribution - SGLang (stacked)
-    new Chart(document.getElementById('quadrantSglangChart'), {
-      type: 'bar',
-      data: {
-        labels: agents,
-        datasets: [
-          { label: 'Q1 True Success', data: [4, 12, 12, 13], backgroundColor: colors.q1, isCount: true, borderRadius: 2 },
-          { label: 'Q2 Good Intent', data: [8, 3, 3, 2], backgroundColor: colors.q2, isCount: true, borderRadius: 2 },
-          { label: 'Q3 Lucky Win', data: [3, 0, 0, 0], backgroundColor: colors.q3, isCount: true, borderRadius: 2 },
-          { label: 'Q4 Failure', data: [0, 0, 0, 0], backgroundColor: colors.q4, isCount: true, borderRadius: 2 }
-        ]
-      },
-      options: {
-        ...defaultOptions,
-        plugins: {
-          ...defaultOptions.plugins,
-          legend: { ...defaultOptions.plugins.legend, labels: { ...defaultOptions.plugins.legend.labels, boxWidth: 12 } }
-        },
-        scales: {
-          ...defaultOptions.scales,
-          x: { ...defaultOptions.scales.x, stacked: true },
-          y: { ...defaultOptions.scales.y, stacked: true, max: 15, ticks: { ...defaultOptions.scales.y.ticks } }
-        }
-      }
-    });
-  });
-  </script>
+  <!-- Data + Chart + Animation scripts -->
+  <script src="static/js/commit-data.js"></script>
+  <script src="static/js/plotly-charts.js"></script>
+  <script src="static/js/scroll-animations.js"></script>
+  <script src="static/js/commit-explorer.js"></script>
 
 </body>
 </html>
