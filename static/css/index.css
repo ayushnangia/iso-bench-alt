@@ -373,12 +373,19 @@ pre {
   font-size: 0.9rem !important;
   overflow-x: auto;
   box-shadow: var(--shadow-sm);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 code {
   background: var(--background-accent) !important;
   color: var(--text-primary) !important;
   font-family: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', monospace !important;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* BibTeX Section Improvements */
@@ -654,6 +661,16 @@ code {
   .content.has-text-justified {
     font-size: 1rem;
   }
+
+  pre {
+    font-size: 0.75rem !important;
+    padding: 1rem !important;
+  }
+
+  .bibtex-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -693,6 +710,11 @@ code {
   .button {
     width: 100%;
     justify-content: center;
+  }
+
+  pre {
+    font-size: 0.65rem !important;
+    padding: 0.75rem !important;
   }
 }
 
